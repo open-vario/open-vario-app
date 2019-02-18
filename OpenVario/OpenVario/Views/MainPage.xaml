@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:OpenVario"
+             x:Class="OpenVario.MainPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="100*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Grid.Column="0" Grid.Row="0">
+                <!-- Place new controls here -->
+                <local:Header />
+            </StackLayout>
+
+            <StackLayout Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+                <!-- Place new controls here -->
+                <Label x:Name="lbStatus" Text="Click to start device discovery!" 
+                   HorizontalOptions="Center"
+                   VerticalOptions="CenterAndExpand" />
+                <Button x:Name="btStart" Text="Start" Command="{Binding StartDiscoveryCommand}"/>
+                <Button x:Name="btStop" Text="Stop" Command="{Binding StopDiscoveryCommand}"/>
+                <ListView x:Name="lvDevices"
+                          ItemsSource="{Binding BleDevices}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout BackgroundColor="#eee" Orientation="Vertical">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Name}" TextColor="#f35e20" />
+                                        <Label Text="{Binding MacAddress}" TextColor="#503026" />
+                                        <Label Text="Is connected : " TextColor="#503026" />
+                                        <Label Text="{Binding IsConnected}" TextColor="#503026" />
+                                        <Label Text="Is connectable : " TextColor="#503026" />
+                                        <Label Text="{Binding IsConnectable}" TextColor="#503026" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="btConnect" Text="Connect" Command="{Binding ConnectCommand}"/>
+                <Button x:Name="btNotif" Text="Start notifications" Command="{Binding NotifCommand}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Main altitude : "/>
+                    <Label x:Name="lblMainAlti" Text="" />
+                    <Entry x:Name="entryMainAlti" Text="0" />
+                    <Button Text="Set!" Clicked="ButtonMainAlti_Clicked"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Altitude 1 : "/>
+                    <Label x:Name="lblAlti1" Text="" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Altitude 2 : "/>
+                    <Label x:Name="lblAlti2" Text="" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Altitude 3 : "/>
+                    <Label x:Name="lblAlti3" Text="" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Altitude 4 : "/>
+                    <Label x:Name="lblAlti4" Text="" />
+                </StackLayout>
+            </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>
