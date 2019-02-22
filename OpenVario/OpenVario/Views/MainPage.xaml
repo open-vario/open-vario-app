@@ -46,28 +46,95 @@
                 </ListView>
                 <Button x:Name="btConnect" Text="Connect" Command="{Binding ConnectCommand}"/>
                 <Button x:Name="btNotif" Text="Start notifications" Command="{Binding NotifCommand}"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Main altitude : "/>
-                    <Label x:Name="lblMainAlti" Text="" />
-                    <Entry x:Name="entryMainAlti" Text="0" />
-                    <Button Text="Set!" Clicked="ButtonMainAlti_Clicked"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Altitude 1 : "/>
-                    <Label x:Name="lblAlti1" Text="" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Altitude 2 : "/>
-                    <Label x:Name="lblAlti2" Text="" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Altitude 3 : "/>
-                    <Label x:Name="lblAlti3" Text="" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Altitude 4 : "/>
-                    <Label x:Name="lblAlti4" Text="" />
-                </StackLayout>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Orientation="Vertical" Grid.Column="0">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Main altitude : "/>
+                            <Label x:Name="lblMainAlti" Text="" />
+                            <Entry x:Name="entryMainAlti" Text="0" />
+                            <Button Text="Set!" Clicked="ButtonMainAlti_Clicked"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Altitude 1 : "/>
+                            <Label x:Name="lblAlti1" Text="" />
+                            <Entry x:Name="entryAlti1" Text="0" />
+                            <Button Text="Set!" Clicked="ButtonAlti1_Clicked"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Altitude 2 : "/>
+                            <Label x:Name="lblAlti2" Text="" />
+                            <Entry x:Name="entryAlti2" Text="0" />
+                            <Button Text="Set!" Clicked="ButtonAlti2_Clicked"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Altitude 3 : "/>
+                            <Label x:Name="lblAlti3" Text="" />
+                            <Entry x:Name="entryAlti3" Text="0" />
+                            <Button Text="Set!" Clicked="ButtonAlti3_Clicked"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Altitude 4 : "/>
+                            <Label x:Name="lblAlti4" Text="" />
+                            <Entry x:Name="entryAlti4" Text="0" />
+                            <Button Text="Set!" Clicked="ButtonAlti4_Clicked"/>
+                        </StackLayout>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Vertical" Grid.Column="1">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Speed : "/>
+                            <Label x:Name="lblSpeed" Text="" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Latitude : "/>
+                            <Label x:Name="lblLatitude" Text="" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Longitude : "/>
+                            <Label x:Name="lblLongitude" Text="" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Track angle : "/>
+                            <Label x:Name="lblTrackAngle" Text="" />
+                        </StackLayout>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Vertical" Grid.Column="2">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Pressure : "/>
+                            <Label x:Name="lblPressure" Text="" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Temperature : "/>
+                            <Label x:Name="lblTemperature" Text="" />
+                        </StackLayout>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Vertical" Grid.Column="3">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Vario : "/>
+                            <Label x:Name="lblVario" Text="" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Acceleration : "/>
+                            <Label x:Name="lblAcceleration" Text="" />
+                        </StackLayout>
+                    </StackLayout>
+                    
+                </Grid>
             </StackLayout>
 
         </Grid>

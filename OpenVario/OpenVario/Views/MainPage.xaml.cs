@@ -24,6 +24,12 @@ namespace OpenVario
 
         public MainPage(IBleStack ble_stack)
         {
+            Speed speed1 = new Speed(2, Speed.Unit.MeterPerSec);
+            Speed speed2 = new Speed(7.2, Speed.Unit.KmPerHour);
+
+            bool comp = (speed1 == speed2);
+            comp = (speed1 != speed2);
+
             StartDiscoveryCommand = new RelayCommand(StartDiscovery);
             StopDiscoveryCommand = new RelayCommand(StopDiscovery);
             ConnectCommand = new RelayCommand(Connect);
@@ -67,9 +73,14 @@ namespace OpenVario
                 IBleDevice ble_device = await _ble_stack.CreateDeviceAsync(lvDevices.SelectedItem as BleDeviceInformation);
 
                 _open_vario_device = new OpenVarioDevice(ble_device);
-                await _open_vario_device.Initialize();
-
-                lbStatus.Text = "Connected!";
+                if (await _open_vario_device.Initialize())
+                {
+                    lbStatus.Text = "Connected!";
+                }
+                else
+                {
+                    lbStatus.Text = "Not an Open Vario device!";
+                }
             }
         }
 
@@ -88,6 +99,28 @@ namespace OpenVario
                 await altimeter_service.StartNotification(AltimeterService.Altitude.Altitude2);
                 await altimeter_service.StartNotification(AltimeterService.Altitude.Altitude3);
                 await altimeter_service.StartNotification(AltimeterService.Altitude.Altitude4);
+
+                NavigationService navigation_service = _open_vario_device.NavigationService;
+                navigation_service.SpeedChanged += OnSpeedChanged;
+                navigation_service.LatitudeChanged += OnLatitudeChanged;
+                navigation_service.LongitudeChanged += OnLongitudeChanged;
+                navigation_service.TrackAngleChanged += OnTrackAngleChanged;
+                await navigation_service.StartNotification(NavigationService.NavigationValue.Speed);
+                await navigation_service.StartNotification(NavigationService.NavigationValue.Latitude);
+                await navigation_service.StartNotification(NavigationService.NavigationValue.Longitude);
+                await navigation_service.StartNotification(NavigationService.NavigationValue.TrackAngle);
+
+                BarometerService barometer_service = _open_vario_device.BarometerService;
+                barometer_service.PressureChanged += OnPressureChanged;
+                barometer_service.TemperatureChanged += OnTemperatureChanged;
+                await barometer_service.StartNotification(BarometerService.BarometerValue.Pressure);
+                await barometer_service.StartNotification(BarometerService.BarometerValue.Temperature);
+
+                VariometerService variometer_service = _open_vario_device.VariometerService;
+                variometer_service.VarioChanged += OnVarioChanged;
+                variometer_service.AccelerationChanged += OnAccelerationChanged;
+                await variometer_service.StartNotification(VariometerService.VariometerValue.Vario);
+                await variometer_service.StartNotification(VariometerService.VariometerValue.Acceleration);
 
                 lbStatus.Text = "Notifications started!";
             }
@@ -133,6 +166,47 @@ namespace OpenVario
                     }
             }
         }
+
+        private void OnSpeedChanged(UInt16 value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblSpeed.Text = value.ToString() + "m/s"; });
+        }
+
+        private void OnLatitudeChanged(double value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblLatitude.Text = value.ToString() + "°"; });
+        }
+
+        private void OnLongitudeChanged(double value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblLongitude.Text = value.ToString() + "°"; });
+        }
+
+        private void OnTrackAngleChanged(UInt16 value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblTrackAngle.Text = value.ToString() + "°"; });
+        }
+
+        private void OnPressureChanged(UInt32 value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblPressure.Text = value.ToString() + "mbar"; });
+        }
+
+        private void OnTemperatureChanged(Int16 value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblTemperature.Text = value.ToString() + "°C"; });
+        }
+
+        private void OnVarioChanged(Int16 value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblVario.Text = value.ToString() + "m/s"; });
+        }
+
+        private void OnAccelerationChanged(Byte value)
+        {
+            ExecuteOnMainThread.BeginInvoke(() => { lblAcceleration.Text = value.ToString() + "g"; });
+        }
+
 
         private void IBleStack_DeviceDiscovered(IBleStack sender, BleDeviceInformation device_info)
         {
@@ -212,6 +286,30 @@ namespace OpenVario
         {
             Int16 value = Convert.ToInt16(entryMainAlti.Text);
             await _open_vario_device.AltimeterService.WriteAltitude(AltimeterService.Altitude.MainAltitude, value);
+        }
+
+        private async void ButtonAlti1_Clicked(object sender, EventArgs e)
+        {
+            Int16 value = Convert.ToInt16(entryAlti1.Text);
+            await _open_vario_device.AltimeterService.WriteAltitude(AltimeterService.Altitude.Altitude1, value);
+        }
+
+        private async void ButtonAlti2_Clicked(object sender, EventArgs e)
+        {
+            Int16 value = Convert.ToInt16(entryAlti2.Text);
+            await _open_vario_device.AltimeterService.WriteAltitude(AltimeterService.Altitude.Altitude2, value);
+        }
+
+        private async void ButtonAlti3_Clicked(object sender, EventArgs e)
+        {
+            Int16 value = Convert.ToInt16(entryAlti3.Text);
+            await _open_vario_device.AltimeterService.WriteAltitude(AltimeterService.Altitude.Altitude3, value);
+        }
+
+        private async void ButtonAlti4_Clicked(object sender, EventArgs e)
+        {
+            Int16 value = Convert.ToInt16(entryAlti4.Text);
+            await _open_vario_device.AltimeterService.WriteAltitude(AltimeterService.Altitude.Altitude4, value);
         }
     }
 }

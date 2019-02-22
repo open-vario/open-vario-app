@@ -31,6 +31,21 @@ namespace OpenVario
         /// </summary>
         public AltimeterService AltimeterService { get; private set; }
 
+        /// <summary>
+        /// Open Vario BLE Navigation service
+        /// </summary>
+        public NavigationService NavigationService { get; private set; }
+
+        /// <summary>
+        /// Open Vario BLE Barometer service
+        /// </summary>
+        public BarometerService BarometerService { get; private set; }
+
+        /// <summary>
+        /// Open Vario BLE Variometer service
+        /// </summary>
+        public VariometerService VariometerService { get; private set; }
+
 
         /// <summary>
         /// Constructor
@@ -81,9 +96,24 @@ namespace OpenVario
                 {
                     BleGattService altimeter_service = _ble_services[AltimeterService.Guid];
                     AltimeterService = new AltimeterService(_ble_device, altimeter_service);
+
+                    BleGattService navigation_service = _ble_services[NavigationService.Guid];
+                    NavigationService = new NavigationService(_ble_device, navigation_service);
+
+                    BleGattService barometer_service = _ble_services[BarometerService.Guid];
+                    BarometerService = new BarometerService(_ble_device, barometer_service);
+
+                    BleGattService variometer_service = _ble_services[VariometerService.Guid];
+                    VariometerService = new VariometerService(_ble_device, variometer_service);
                 }
                 catch (KeyNotFoundException)
                 {
+                    _ble_services.Clear();
+                    AltimeterService = null;
+                    NavigationService = null;
+                    BarometerService = null;
+                    VariometerService = null;
+
                     ret = false;
                 }
             }

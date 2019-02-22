@@ -167,6 +167,7 @@ namespace OpenVario
         /// Modify a specified altitude value
         /// </summary>
         /// <param name="altitude">Altitude to modified</param>
+        /// <param name="value">Altitude value</param>
         /// <returns>true if the operation succeeded, false otherwise</returns>
         public async Task<bool> WriteAltitude(Altitude altitude, Int16 value)
         {
@@ -179,6 +180,57 @@ namespace OpenVario
                 // Look for the selected characteristic
                 BleGattCharacteristic alti_characteristic = _altitude_characteristics[altitude];
                 ret = await BleDevice.WriteValueAsync(alti_characteristic, new BleValue(value));
+            }
+
+            return ret;
+        }
+
+
+        /// <summary>
+        /// Result of a ReadAltitude() operation
+        /// </summary>
+        public class ReadAltitudeResult
+        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public ReadAltitudeResult()
+            {
+                Success = false;
+                Value = 0;
+            }
+
+            /// <summary>
+            /// true if the operation succeeded, false otherwise
+            /// </summary>
+            public bool Success { get; set; }
+            /// <summary>
+            /// Altitude value
+            /// </summary>
+            public Int16 Value { get; set; }
+        }
+
+        /// <summary>
+        /// Read a specified altitude value
+        /// </summary>
+        /// <param name="altitude">Altitude to read</param>
+        /// <returns>true if the operation succeeded, false otherwise</returns>
+        public async Task<ReadAltitudeResult> ReadAltitude(Altitude altitude)
+        {
+            ReadAltitudeResult ret = new ReadAltitudeResult();
+
+            // List characteristics
+            ret.Success = await InitCharacteristics();
+            if (ret.Success)
+            {
+                // Look for the selected characteristic
+                BleValue val = new BleValue();
+                BleGattCharacteristic alti_characteristic = _altitude_characteristics[altitude];
+                ret.Success = await BleDevice.ReadValueAsync(alti_characteristic, val);
+                if (ret.Success)
+                {
+                    ret.Value = val.ToInt16();
+                }
             }
 
             return ret;
